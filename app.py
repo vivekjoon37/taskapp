@@ -281,7 +281,10 @@ elif page == "📋 My Tasks":
 
         pwd = st.text_input("Password", type="password", key="pwd_input")
         if st.button("Login", use_container_width=True):
-            if pwd == st.secrets.get("vivek_password", ""):
+            expected_pwd = st.secrets.get("vivek_password", "")
+            if not expected_pwd:
+                st.error("⚠️ Password secret not found in Streamlit Cloud. Please add 'vivek_password' to your secrets dashboard.")
+            elif pwd.strip() == expected_pwd.strip():
                 st.session_state.vivek_logged_in = True
                 st.rerun()
             else:
